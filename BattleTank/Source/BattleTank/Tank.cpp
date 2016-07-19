@@ -32,16 +32,33 @@ void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 	Super::SetupPlayerInputComponent(InputComponent);
 	if (InputComponent)
 	{
-		InputComponent->BindAction("Turret_Clockwise", EInputEvent::IE_Pressed, this, &ATank::RotateTurret);
+		InputComponent->BindAction("Turret_Clockwise", EInputEvent::IE_Pressed, this, &ATank::TurretCWRotate);
+		InputComponent->BindAction("Turret_CClockwise", EInputEvent::IE_Pressed, this, &ATank::TurretCCWRotate);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Null InputComponent referenced in SetupPlayerInputComponent!"));
+		UE_LOG(LogTemp, Error, TEXT("Null InputComponent referenced in SetupPlayerInputComponent!"));
 	}
 }
 
-void ATank::RotateTurret()
+void ATank::SetTurretChildActor(UStaticMeshComponent* TurretFromBP)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Rotate turret pressed!"));
+	if (TurretFromBP)
+	{
+		Turret = TurretFromBP;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Turret component not found!"));
+	}
+}
 
+void ATank::TurretCWRotate()
+{
+	Turret->AddRelativeRotation(FRotator(0.f, 30.f, 0.f));
+}
+
+void ATank::TurretCCWRotate()
+{
+	Turret->AddRelativeRotation(FRotator(0.f, -30.f, 0.f));
 }
