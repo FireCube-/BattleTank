@@ -23,10 +23,22 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Tank")
 	void SetBarrelChildActor(UStaticMeshComponent* BarrelFromBP);
 
+	UFUNCTION(BlueprintCallable, Category = "Tank")
+	void SetTankChildActor(UStaticMeshComponent* TankFromBP);
+
 private:
+	UPROPERTY(EditAnywhere)
+	float MaximumMovementSpeed = 500.f;
+
+	UPROPERTY(EditAnywhere)
+	float MaximumRotationSpeed = 100.f;
+
+	UStaticMeshComponent* Tank = nullptr;
 	UStaticMeshComponent* Turret = nullptr;
 	UStaticMeshComponent* Barrel = nullptr;
 
 	void RotateTurret(float Speed);
 	void ElevateBarrel(float Speed);
+	void MoveTank(float Speed);
+	void RotateTank(float Speed);
 };
