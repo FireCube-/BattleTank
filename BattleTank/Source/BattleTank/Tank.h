@@ -11,24 +11,22 @@ class BATTLETANK_API ATank : public APawn
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
 	ATank();
 
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	
-	// Called every frame
+	virtual void BeginPlay() override;	
 	virtual void Tick( float DeltaSeconds ) override;
-
-	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
-
 
 	UFUNCTION(BlueprintCallable, Category = "Tank")
 	void SetTurretChildActor(UStaticMeshComponent* TurretFromBP);
+
+	UFUNCTION(BlueprintCallable, Category = "Tank")
+	void SetBarrelChildActor(UStaticMeshComponent* BarrelFromBP);
+
 private:
 	UStaticMeshComponent* Turret = nullptr;
+	UStaticMeshComponent* Barrel = nullptr;
 
-	void TurretCWRotate();
-	void TurretCCWRotate();
+	void RotateTurret(float Speed);
+	void ElevateBarrel(float Speed);
 };

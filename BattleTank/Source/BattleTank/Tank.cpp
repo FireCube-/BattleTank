@@ -4,61 +4,70 @@
 #include "Tank.h"
 
 
-// Sets default values
 ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
-// Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
-// Called every frame
 void ATank::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-
 }
 
-// Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
-	if (InputComponent)
+	if (!InputComponent)
 	{
-		InputComponent->BindAction("Turret_Clockwise", EInputEvent::IE_Pressed, this, &ATank::TurretCWRotate);
-		InputComponent->BindAction("Turret_CClockwise", EInputEvent::IE_Pressed, this, &ATank::TurretCCWRotate);
+		UE_LOG(LogTemp, Error, TEXT("Null InputComponent referenced in method SetupPlayerInputComponent!"));
+		return;
 	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Null InputComponent referenced in SetupPlayerInputComponent!"));
-	}
+	InputComponent->BindAxis("RotateTurret", this, &ATank::RotateTurret);
+	InputComponent->BindAxis("ElevateBarrel", this, &ATank::ElevateBarrel);
 }
 
 void ATank::SetTurretChildActor(UStaticMeshComponent* TurretFromBP)
 {
-	if (TurretFromBP)
+	if (!TurretFromBP)
 	{
-		Turret = TurretFromBP;
+		UE_LOG(LogTemp, Error, TEXT("Null UStaticMeshComponent referenced in method SetTurretChildActor"));
+		return;
 	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("Turret component not found!"));
-	}
+	Turret = TurretFromBP;
 }
 
-void ATank::TurretCWRotate()
+void ATank::SetBarrelChildActor(UStaticMeshComponent* BarrelFromBP)
 {
-	Turret->AddRelativeRotation(FRotator(0.f, 30.f, 0.f));
+	if (!BarrelFromBP)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Null UStaticMeshComponent referenced in method SetBarrelChildActor"));
+		return;
+	}
+	Barrel = BarrelFromBP;
 }
 
-void ATank::TurretCCWRotate()
+void ATank::RotateTurret(float Speed)
 {
-	Turret->AddRelativeRotation(FRotator(0.f, -30.f, 0.f));
+	if (!Turret)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Null UStaticMeshComponent referenced in method RotateTurret"));
+		return;
+	}
+	Turret->AddRelativeRotation(FRotator(0.f, Speed, 0.f));
+}
+
+void ATank::ElevateBarrel(float Speed)
+{
+	if (!Turret)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Null UStaticMeshComponent referenced in method ElevateBarrel"));
+		return;
+	}
+	Barrel->AddRelativeRotation(FRotator(Speed, 0.f, 0.f));
 }
