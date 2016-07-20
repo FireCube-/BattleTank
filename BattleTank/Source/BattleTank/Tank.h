@@ -28,10 +28,19 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere)
-	float MaximumMovementSpeed = 500.f;
+	float MinimumElevationDegree = -15.f;
 
 	UPROPERTY(EditAnywhere)
-	float MaximumRotationSpeed = 100.f;
+	float MaximumElevationDegree = 45.f;
+
+	UPROPERTY(EditAnywhere)
+	float TankMovementSpeed = 500.f;
+
+	UPROPERTY(EditAnywhere)
+	float TankRotationSpeed = 100.f;
+
+	UPROPERTY(EditAnywhere)
+	float TurretRotationSpeed = 50.f;
 
 	UStaticMeshComponent* Tank = nullptr;
 	UStaticMeshComponent* Turret = nullptr;

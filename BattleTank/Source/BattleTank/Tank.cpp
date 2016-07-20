@@ -70,7 +70,7 @@ void ATank::RotateTurret(float Speed)
 		UE_LOG(LogTemp, Error, TEXT("Null UStaticMeshComponent referenced in method ATank::RotateTurret"));
 		return;
 	}
-	float Rotation = GetWorld()->DeltaTimeSeconds * MaximumRotationSpeed *  Speed;
+	float Rotation = GetWorld()->DeltaTimeSeconds * TurretRotationSpeed *  Speed;
 	Turret->AddRelativeRotation(FRotator(0.f, Rotation, 0.f));
 }
 
@@ -81,9 +81,9 @@ void ATank::ElevateBarrel(float Speed)
 		UE_LOG(LogTemp, Error, TEXT("Null UStaticMeshComponent referenced in method ATank::ElevateBarrel"));
 		return;
 	}
-	float Rotation = GetWorld()->DeltaTimeSeconds * MaximumRotationSpeed *  Speed;
+	float Rotation = GetWorld()->DeltaTimeSeconds * TankRotationSpeed *  Speed;
 	float PitchRotated = Barrel->GetComponentRotation().Pitch + Rotation;
-	if (PitchRotated <= 60.f && PitchRotated >= -15.f)
+	if (PitchRotated <= MaximumElevationDegree && PitchRotated >= MinimumElevationDegree)
 		Barrel->AddRelativeRotation(FRotator(Rotation, 0.f, 0.f));
 }
 
@@ -94,7 +94,7 @@ void ATank::MoveTank(float Speed)
 		UE_LOG(LogTemp, Error, TEXT("Null UStaticMeshComponent referenced in method ATank::MoveTank"));
 		return;
 	}
-	float Location = GetWorld()->DeltaTimeSeconds * MaximumMovementSpeed * Speed * -1.f;
+	float Location = GetWorld()->DeltaTimeSeconds * TankMovementSpeed * Speed * -1.f;
 	Tank->AddRelativeLocation(Tank->GetForwardVector() * Location);
 }
 
@@ -105,6 +105,6 @@ void ATank::RotateTank(float Speed)
 		UE_LOG(LogTemp, Error, TEXT("Null UStaticMeshComponent referenced in method ATank::RotateTank"));
 		return;
 	}
-	float Rotation = GetWorld()->DeltaTimeSeconds * MaximumRotationSpeed *  Speed;
+	float Rotation = GetWorld()->DeltaTimeSeconds * TankRotationSpeed *  Speed;
 	Tank->AddRelativeRotation(FRotator(0.f, Rotation, 0.f));
 }
